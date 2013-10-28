@@ -31,5 +31,18 @@ public class RNG {
 
 		return Math.sqrt(-2*Math.log10(x)) * Math.cos(2*Math.PI*y) * sigma + mean;
 	}
+	
+	/**
+	 * Generates a random state from a current state with normal distribution on every element of the state
+	 * @param current state
+	 * @return random state
+	 */
+	public static State getRandomState(State current){
+		int i;
+		State next = new State();
+		for(i=0; i < current.size(); i++)
+			next.addElement(RNG.lnorm(current.getElement(i), 1));
+		return next;
+	}
 
 }
