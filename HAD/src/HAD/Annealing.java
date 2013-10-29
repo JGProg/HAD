@@ -39,9 +39,9 @@ public class Annealing implements Heuristic{
 	 */
 	State terminal;
 	/**
-	 * Cost function
+	 * Instance of a problem
 	 */
-	Cost cost;
+	Instance instance;
 	
 	/**
 	 * 
@@ -49,9 +49,9 @@ public class Annealing implements Heuristic{
 	 * @param Initial temperature
 	 * @param Maximum number of iterations
 	 */
-	public Annealing(Cost costf, double T, int max){
+	public Annealing(Instance inst, double T, int max){
 		init_temp = T;
-		cost = costf;
+		instance = inst;
 		nmax = max;
 	}
 
@@ -65,11 +65,11 @@ public class Annealing implements Heuristic{
 		initial = instate;
 		
 		while(iterations < nmax){
-			if(cost(min) > cost(current)){
+			if(instance.cost(min) > instance.cost(current)){
 				min = current;
 			}
 			
-			next = RNG.getRandomState(current);
+			next = instance.getRandomState(current);
 			if(RNG.luniform(0,1) < delta(current, next)){
 				current = next;
 				moves++;
@@ -97,11 +97,6 @@ public class Annealing implements Heuristic{
 	public int getIterations() {
 		return iterations;
 	}
-
-	@Override
-	public double cost(State state) {
-		return cost.cost(state);
-	}
 	
 	/**
 	 * Decreases temperature according to the Boltzmann statistics
@@ -117,7 +112,7 @@ public class Annealing implements Heuristic{
 	 * @return ratio
 	 */
 	private double delta(State current, State next){
-		return Math.exp(cost(current) - cost(next));
+		return Math.exp(instance.cost(current) - instance.cost(next));
 	}
 	
 	/**
@@ -128,17 +123,17 @@ public class Annealing implements Heuristic{
 		System.out.println("===========================");
 		System.out.println("=== Simulated Annealing ===");
 		System.out.println("= Cost function : ");
-		System.out.println("  (name)          " + cost.getName());
-		System.out.println("  (desc)          " + cost.getDesc());
+		System.out.println("  (name)          " + instance.getName());
+		System.out.println("  (desc)          " + instance.getDesc());
 		System.out.println("= Iterations    : ");
 		System.out.println("  (max)           " + nmax);
 		System.out.println("  (iterations)    " + iterations);
 		System.out.println("  (moves)         " + moves);
 		System.out.println("= Initial       : " );
-		System.out.println("  (cost)          " + cost.cost(initial));
+		System.out.println("  (cost)          " + instance.cost(initial));
 		System.out.println("  (temperature)   " + init_temp);
 		System.out.println("= Terminal      : " );
-		System.out.println("  (cost)          " + cost.cost(terminal));
+		System.out.println("  (cost)          " + instance.cost(terminal));
 		System.out.println("  (temperature)   " + final_temp);
 		System.out.println("===========================");
 		System.out.println("");

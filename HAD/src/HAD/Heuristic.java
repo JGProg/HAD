@@ -33,11 +33,5 @@ public interface Heuristic {
 	 */
 	public int getIterations();
 	
-	/**
-	 * Calculates the cost associated to state
-	 * @param state
-	 * @return Cost
-	 */
-	public double cost(State state);
 
 }

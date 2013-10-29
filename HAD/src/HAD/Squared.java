@@ -1,6 +1,10 @@
 package HAD;
 
-public class Squared implements Cost{
+public class Squared extends Instance{
+
+	public Squared(State state) {
+		super(state);
+	}
 
 	@Override
 	public double cost(State state) {
@@ -15,5 +19,14 @@ public class Squared implements Cost{
 	@Override
 	public String getDesc() {
 		return "f(x) = x * x + 2";
+	}
+
+	@Override
+	public State getRandomState(State current){
+		int i;
+		State next = new State();
+		for(i=0; i < current.size(); i++)
+			next.addElement(RNG.lnorm(current.getElement(i), 1));
+		return next;
 	}
 }
